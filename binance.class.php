@@ -143,6 +143,35 @@ class Binance{
         ]);
     }
 
+    /**
+        Account endpoints
+    */
+
+    /*
+        LIMIT   timeInForce, quantity, price
+        MARKET  quantity
+        STOP_LOSS   quantity, stopPrice
+        STOP_LOSS_LIMIT     timeInForce, quantity, price, stopPrice
+        TAKE_PROFIT     quantity, stopPrice
+        TAKE_PROFIT_LIMIT   timeInForce, quantity, price, stopPrice
+        LIMIT_MAKER     quantity, price
+    */
+    public function order($symbol='BTCUSDT', $side='SIDE_BUY', $type='MARKET', $quantity='100', $timestamp=time(), $optionals_array=[])
+    {
+        $mandatory_data_array = [
+                'symbol'=>$symbol,
+                'side'=>$this->enums($side),
+                'type'=>$type,
+                'quantity'=>$quantity,
+                'timestamp'=>$timestamp,
+            ];
+        $data_array = array_merge($request_data_array, $optionals)
+
+        return $this->binanceRequest('/api/v3/order', [
+            'post'=>$data_array
+        ]);
+    }   
+
     private function enums($item_key)
     {
         $enums['SYMBOL_TYPE_SPOT'] = 'SPOT';
@@ -261,6 +290,7 @@ class Binance{
         curl_close($ch);
         return $result;
     }
+
 
 }
 
